@@ -1,0 +1,2 @@
+# QakeLogTestCloudWalk
+Qake Log Test
