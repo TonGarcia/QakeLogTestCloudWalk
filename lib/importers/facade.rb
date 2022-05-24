@@ -14,7 +14,6 @@ module Importers
       dataset_path = File.join(Rails.root, 'datasource', file_name)
 
       count = 0
-      item_id = 0
       players = []
       obj_players = []
 
@@ -59,12 +58,14 @@ module Importers
               GamePlayer.create(game_id: game&.id, player_id: player.id)
             end
             
-            Kill.create(
+            kill = Kill.new(
               killed_id: obj_players[players.index(killed)].id, 
               killer_id: obj_players[players.index(killer)].id,
               cause: Cause.name_arr(cause, idx=true),
-              game_id: game
+              game_id: game&.id
             )
+
+            kill.save
           end
 
           # check if it is end of a game
