@@ -13,118 +13,69 @@ module Importers
       dataset_path = File.join(Rails.root, 'datasource', file_name)
 
       count = 0
-      headers = []
-      registers = []
-      excluded_attrs = %w[CO_MUNICIPIO_IBGE_PAC NU_REGISTRO_ANVISA QT_CNS_PACIENTE QT_CNES QT_CNPJ_FABRICANTE QT_PRESCRITOR QT_CID10_PRESCRICAO VL_MOVIMENTACAO]
-
       item_id = 0
+      players = []
       File.open(dataset_path) do |f|
+        game = nil
         while line = f.gets
-          register = []
           line = line.strip
-          line.gsub!('"', '') unless line.index('"').nil?
-          columns = line.split(';')
-          columns = line.split(',') if columns.length == 1
-          skip_register = false
+          
+          # check if it is a skip line (log breaker)
+          next unless (line =~ /[0-9]+:[0-9]+ -{3,}/).nil?
 
-          if count.zero?
-            headers = columns
-            count += 1
+          # check if it is starting a new game
+          unless (line =~ /[0-9]+:[0-9]+ InitGame:/).nil?
+            game = Game.create
             next
           end
 
-          columns.each_with_index do |val, i|
-            attr = headers[i]
-            next if excluded_attrs.include?(attr) || (!specific_attrs.nil? && !specific_attrs.include?(attr)) || attr.nil?
-
-            # next if (attr == 'NU_CATMAT' && val.index('BR').nil?) || val.nil? || (attr == 'DS_PRODUTO' && val.length < 10)
-
-            case val
-            when 'false'
-              val = false
-            when 'true'
-              val = true
-            end
-
-            unless attr.index('_id').nil?
-              val = nil if val == ''
-              val = val.to_i if val.is_a?(String)
-            end
-
-            if !attr.nil? && (!attr.index('vl').nil? || !attr.index('VL').nil?)
-              if val.is_a?(String) && !val.index(',').nil?
-                val.gsub! '.', ''
-                val.gsub! ',', '.'
-                val = "0#{val}" if val[0] == '.'
-              end
-
-              val = 0 if val == ''
-              val_new = BigDecimal(val)
-              val = val_new
-            end
-
-            print(attr) if attr.nil?
-
-            if !attr.index('NU').nil? || !attr.index('CO').nil?
-              val = val.strip
-              if val.length.zero?
-                val = 0
-              else
-                skip_attrs = %w[NU_VOLUME_MEDICAMENTO NU_TELEFONE NU_FAX CO_REGIAO_SAUDE CO_MICRO_REGIAO NU_ALVARA NU_LONGITUDE NU_LATITUDE NU_CNPJ NU_CPF]
-                if !skip_attrs.include?(attr) && val.match(/[a-zA-Z]/).nil? && val.match(%r{[+%/]}).nil? && (val.index('0') != 0) && val.index('.').nil?
-                  val = Integer(val)
-                end
+          # check if it is kill
+          unless (line =~ /[0-9]+:[0-9]+ Kill:/).nil?
+            matcher = line.match(/[0-9]+ [0-9]+ [0-9]+: (.*) killed (.*) by (.*)/)
+            next if matcher.nil?
+            kill_data = matcher.captures
+            killer = kill_data[0]
+            killed = kill_data[1]
+            cause = kill_data[2]
+            
+            if killer != '<world>'
+              unless players.include? killer
+                players << killer
+                player = Player.find_or_create_by(name: killer)
+                GamePlayer.create(game_id: game.id, player_id: player.id)
               end
             end
-
-            register << val
           end
 
-          if (!additional_column.nil? && additional_column.length.positive?) && (!additional_val.nil? && additional_val.length.positive?)
-            additional_column.each_with_index do |_, i|
-              register << additional_val[i]
-            end
+          # check if it is end of a game
+          unless (line.strip =~ /[0-9]+:[0-9]+ ShutdownGame:/).nil?
+            game.save
+            game = nil
           end
 
-          import_headers = specific_attrs.nil? ? headers - excluded_attrs : specific_attrs
-          import_headers += additional_column if !additional_column.nil? && additional_column.length.positive?
-
-          if headers.length != register.length
-            count_missing_elements = headers.length - register.length
-            count_missing_elements.times do |_|
-              register << ''
-            end
-          end
-
-          next if skip_register
-          registers << register if register.length == import_headers.length
           count += 1
 
+          # TODO create UI loading on the terminal
           if show_progress && (pagination.zero? || (count % pagination).zero?)
-            p "#{count} iterated registers at #{Time.now}"
-            start_time = Time.now
-            puts 'Insertion started'.colorize(:yellow)
-            import_headers = specific_attrs.nil? ? headers - excluded_attrs : specific_attrs
-            import_headers += additional_column if !additional_column.nil? && additional_column.length.positive?
-
-            import_headers[0] = 'NU_PRODUTO' unless import_headers[0].index('NU_PRODUTO').nil?
-            import_headers[0] = 'CO_SEQ_PRODUTO' unless import_headers[0].index('CO_SEQ_PRODUTO').nil?
-
-            model.classify.safe_constantize.import import_headers, registers, validate: false
-            end_time = Time.now
-            p "Spent Time (insertion): #{end_time - start_time}"
-
-            # count == 1000000 ? break : count=count+1 # TODO Comment if not a test
-            registers = [] # free memory
-
-            break if limit && count == limit
+            # p "#{count} iterated registers at #{Time.now}"
+            # start_time = Time.now
+            # puts 'Insertion started'.colorize(:yellow)
+            # import_headers = specific_attrs.nil? ? headers - excluded_attrs : specific_attrs
+            # import_headers += additional_column if !additional_column.nil? && additional_column.length.positive?
+            #
+            # import_headers[0] = 'NU_PRODUTO' unless import_headers[0].index('NU_PRODUTO').nil?
+            # import_headers[0] = 'CO_SEQ_PRODUTO' unless import_headers[0].index('CO_SEQ_PRODUTO').nil?
+            #
+            # model.classify.safe_constantize.import import_headers, registers, validate: false
+            # end_time = Time.now
+            # p "Spent Time (insertion): #{end_time - start_time}"
+            #
+            # # count == 1000000 ? break : count=count+1 # TODO Comment if not a test
+            # registers = [] # free memory
+            #
+            # break if limit && count == limit
           end
 
-          item_id += 1
-          # puts "Item ID: ##{item_id}"
-          # if item_id == 248
-          #   puts "bugged at: ##{item_id}"
-          # end
         end
 
         unless show_progress || registers.length.positive?

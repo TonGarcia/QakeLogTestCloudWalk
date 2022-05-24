@@ -7,9 +7,16 @@ QakeLog CloudWalk Test
 
 ## ToDo / Goals
 
-- [ ] Read the log file
+- [x] Read the log file
 - [ ] Group the game data of each match
 - [ ] Collect kill data
+
+## Project Ends
+
+1. WebServer (data loader) - Heroku
+2. ELK (data visualization) - Docker - Vultr
+3. Python (data science) - Google Drive Colab
+4. EVM (stablecoin + NFT with the data) - Ethereum &/or Polygon
 
 ## Project Stack
 
