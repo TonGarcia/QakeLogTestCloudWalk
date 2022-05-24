@@ -5,6 +5,14 @@ QakeLog CloudWalk Test
 1. GitLab repo: https://gitlab.com/TonGarcia/qakelog
 2. GitHub repo: https://github.com/TonGarcia/QakeLogTestCloudWalk
 
+## Running it
+
+1. Clone it
+2. Install RVM
+3. Go to the the project via terminal and it gonna install the dependencies
+4. Run: ``` $ rails db:create && rails db:recreate ```
+   1. To prevent "print spam" set "show_progress" to false at: seeds.rb
+
 ## ToDo / Goals
 
 - [x] Read the log file

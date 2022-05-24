@@ -33,13 +33,17 @@ ActiveRecord::Schema.define(version: 2022_05_24_055011) do
 
   create_table "kills", force: :cascade do |t|
     t.integer "cause", null: false
-    t.bigint "player_id", null: false
+    t.integer "killer_id", null: false
+    t.integer "killed_id", null: false
     t.bigint "game_id", null: false
     t.datetime "deleted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "killer_id_id"
+    t.bigint "killed_id_id"
     t.index ["game_id"], name: "index_kills_on_game_id"
-    t.index ["player_id"], name: "index_kills_on_player_id"
+    t.index ["killed_id_id"], name: "index_kills_on_killed_id_id"
+    t.index ["killer_id_id"], name: "index_kills_on_killer_id_id"
   end
 
   create_table "players", force: :cascade do |t|
@@ -52,5 +56,6 @@ ActiveRecord::Schema.define(version: 2022_05_24_055011) do
   add_foreign_key "game_players", "games"
   add_foreign_key "game_players", "players"
   add_foreign_key "kills", "games"
-  add_foreign_key "kills", "players"
+  add_foreign_key "kills", "players", column: "killed_id_id"
+  add_foreign_key "kills", "players", column: "killer_id_id"
 end

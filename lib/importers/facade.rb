@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'progress_bar'
 require 'singleton'
 
 module Importers
@@ -15,9 +16,15 @@ module Importers
       count = 0
       item_id = 0
       players = []
+      obj_players = []
+
+      line_count = `wc -l "#{dataset_path}"`.strip.split(' ')[0].to_i
+      bar = ProgressBar.new(line_count)
+      
       File.open(dataset_path) do |f|
         game = nil
         while line = f.gets
+          bar.increment!
           line = line.strip
           
           # check if it is a skip line (log breaker)
@@ -38,13 +45,26 @@ module Importers
             killed = kill_data[1]
             cause = kill_data[2]
             
-            if killer != '<world>'
-              unless players.include? killer
-                players << killer
-                player = Player.find_or_create_by(name: killer)
-                GamePlayer.create(game_id: game.id, player_id: player.id)
-              end
+            unless players.include? killer
+              players << killer
+              player = Player.find_or_create_by(name: killer)
+              obj_players << player
+              GamePlayer.create(game_id: game&.id, player_id: player.id)
             end
+
+            unless players.include? killed
+              players << killed
+              player = Player.find_or_create_by(name: killed)
+              obj_players << player
+              GamePlayer.create(game_id: game&.id, player_id: player.id)
+            end
+            
+            Kill.create(
+              killed_id: obj_players[players.index(killed)].id, 
+              killer_id: obj_players[players.index(killer)].id,
+              cause: Cause.name_arr(cause, idx=true),
+              game_id: game
+            )
           end
 
           # check if it is end of a game
@@ -54,28 +74,6 @@ module Importers
           end
 
           count += 1
-
-          # TODO create UI loading on the terminal
-          if show_progress && (pagination.zero? || (count % pagination).zero?)
-            # p "#{count} iterated registers at #{Time.now}"
-            # start_time = Time.now
-            # puts 'Insertion started'.colorize(:yellow)
-            # import_headers = specific_attrs.nil? ? headers - excluded_attrs : specific_attrs
-            # import_headers += additional_column if !additional_column.nil? && additional_column.length.positive?
-            #
-            # import_headers[0] = 'NU_PRODUTO' unless import_headers[0].index('NU_PRODUTO').nil?
-            # import_headers[0] = 'CO_SEQ_PRODUTO' unless import_headers[0].index('CO_SEQ_PRODUTO').nil?
-            #
-            # model.classify.safe_constantize.import import_headers, registers, validate: false
-            # end_time = Time.now
-            # p "Spent Time (insertion): #{end_time - start_time}"
-            #
-            # # count == 1000000 ? break : count=count+1 # TODO Comment if not a test
-            # registers = [] # free memory
-            #
-            # break if limit && count == limit
-          end
-
         end
 
         unless show_progress || registers.length.positive?
