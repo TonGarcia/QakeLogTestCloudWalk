@@ -16,6 +16,7 @@ Just run: ``` $ docker-compose up -d ```
 3. Go to the the project via terminal and it gonna install the dependencies
 4. Run: ``` $ rails db:create && rails db:recreate ```
    1. To prevent "print spam" set "show_progress" to false at: seeds.rb (SCROLL TO LEFT ON TERMINAL)
+5. IF test data missing, run: ``` $ env RAILS_ENV=test rake db:seed ```
 
 ## ToDo / Goals
 

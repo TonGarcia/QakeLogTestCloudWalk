@@ -6,4 +6,5 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Importers::QakeLogs.instance.load_and_persist(show_progress = true) # pagination=200, limit=2000 #pagination=250
+show_progress = true
+Importers::QakeLogs.instance.load_and_persist(show_progress) # pagination=200, limit=2000 #pagination=250

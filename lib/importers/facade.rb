@@ -8,10 +8,10 @@ module Importers
     include Singleton
     attr_accessor :file_name, :model, :specific_attrs, :additional_column, :additional_val
 
-    def load_and_persist(show_progress = false, pagination = 0, limit = nil)
-      start_time = Time.now
+    def load_and_persist(show_progress = false)
+      start_time = Time.zone.now
       puts "Opening log at #{start_time}".colorize(:yellow)
-      dataset_path = File.join(Rails.root, 'datasource', file_name)
+      dataset_path = Rails.root.join("datasource/#{file_name}") 
 
       count = 0
       players = []
@@ -19,7 +19,7 @@ module Importers
 
       line_count = `wc -l "#{dataset_path}"`.strip.split(' ')[0].to_i
       bar = ProgressBar.new(line_count)
-      puts "Processing the file...".colorize(:green)
+      puts 'Processing the file...'.colorize(:green)
       File.open(dataset_path) do |f|
         game = nil
         while line = f.gets
@@ -41,7 +41,9 @@ module Importers
           # check if it is kill
           unless (line =~ /[0-9]+:[0-9]+ Kill:/).nil?
             matcher = line.match(/[0-9]+ [0-9]+ [0-9]+: (.*) killed (.*) by (.*)/)
+
             next if matcher.nil?
+
             kill_data = matcher.captures
             killer = kill_data[0]
             killed = kill_data[1]
@@ -68,7 +70,7 @@ module Importers
             kill = Kill.new(
               killed_id: obj_players[players.index(killed)].id, 
               killer_id: obj_players[players.index(killer)].id,
-              cause: Cause.name_arr(cause, idx=true),
+              cause: Cause.name_arr(cause, true),
               game_id: game&.id
             )
 
@@ -90,7 +92,7 @@ module Importers
         end
       end
 
-      end_time = Time.now
+      end_time = Time.zone.now
       puts "Log #{file_name} finished at #{end_time}, elapsed time: #{end_time - start_time}".colorize(:green)
     end
   end

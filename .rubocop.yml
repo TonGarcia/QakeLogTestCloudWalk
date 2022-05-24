@@ -20,9 +20,61 @@ require:
   - rubocop-rails
 
 Style/FrozenStringLiteralComment:
-  Description: To help transition from Ruby 2.3.0 to Ruby 3.0.
+  Description: 'To help transition from Ruby 2.3.0 to Ruby 3.0.'
   Enabled: false
 
 Style/Documentation:
   Description: 'Document classes and non-namespace modules.'
+  Enabled: false
+
+Style/BlockComments:
+  Description: 'Do not use block comments'
+  Enabled: false
+
+Layout/TrailingWhitespace:
+  Description: 'Trailing whitespace detected'
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Description: 'Use == if you meant to do a comparison or wrap the expression in parentheses to indicate you meant to assign in a condition.'
+  Enabled: false
+
+Metrics/BlockLength: 
+  Description: 'Block has too many lines'
+  Enabled: false
+  
+Rails/Output: 
+  Description: Do not write to stdout. Use Rails's logger if you want to log.
+  Enabled: false
+
+Style/OptionalBooleanParameter: 
+  Description: 'Prefer keyword arguments for arguments with a boolean default value; use show_progress: false instead of show_progress = false'
+  Enabled: false
+
+Metrics/MethodLength:
+  Description: 'Method has too many lines. [33/10]'
+  Enabled: false
+  
+Metrics/PerceivedComplexity: 
+  Description: Perceived complexity for load_and_persist is too high
+  Enabled: false
+
+Metrics/CyclomaticComplexity: 
+  Description: Cyclomatic complexity for load_and_persist is too high
+  Enabled: false
+
+Rails/HasManyOrHasOneDependent: 
+  Description: Specify a :dependent option
+  Enabled: false
+  
+Rails/HasAndBelongsToMany: 
+  Description: Prefer has_many :through to has_and_belongs_to_many
+  Enabled: false
+  
+Metrics/AbcSize: 
+  Description: Assignment Branch Condition size for load_and_persist is too high
+  Enabled: false
+
+Style/SymbolArray: 
+  Description: Use %i or %I for an array of symbols
   Enabled: false

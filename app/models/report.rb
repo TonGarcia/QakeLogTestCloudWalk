@@ -23,7 +23,7 @@ class Report
   # }
   def self.generate
     response = {}
-    world = Player.where(name: '<world>').take
+    world = Player.find_by(name: '<world>')
     world_id = world.id
     
     # batch processing loop

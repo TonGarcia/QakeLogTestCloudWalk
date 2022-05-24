@@ -1,7 +1,6 @@
 class HomeController < ApplicationController
   # POST /api/importer -> import the received file 
-  def importer
-  end
+  def importer; end
 
   # GET /api/report -> generate the expected report
   def report
@@ -9,6 +8,5 @@ class HomeController < ApplicationController
   end
 
   # GET /api/exporter -> retrieve CSV dataset
-  def exporter
-  end
+  def exporter; end
 end

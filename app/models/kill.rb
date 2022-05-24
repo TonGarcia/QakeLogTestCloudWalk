@@ -3,8 +3,8 @@ class Kill < ApplicationRecord
   acts_as_paranoid
 
   # Relations
-  belongs_to :killer, class_name: 'Player', foreign_key: 'killer_id'
-  belongs_to :killed, class_name: 'Player', foreign_key: 'killed_id'
+  belongs_to :killer, class_name: 'Player'
+  belongs_to :killed, class_name: 'Player'
   belongs_to :game
 
   # Validations

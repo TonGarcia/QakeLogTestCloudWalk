@@ -1,5 +1,5 @@
 class Cause
-  def self.name_arr(name_str=nil, idx=false)
+  def self.name_arr(name_str = nil, idx = false)
     ar = [
       :MOD_UNKNOWN,
       :MOD_SHOTGUN,
@@ -24,17 +24,16 @@ class Cause
       :MOD_SUICIDE,
       :MOD_TARGET_LASER,
       :MOD_TRIGGER_HURT,
-      #ifdef MISSIONPACK
       :MOD_NAIL,
       :MOD_CHAINGUN,
       :MOD_PROXIMITY_MINE,
       :MOD_KAMIKAZE,
       :MOD_JUICED,
-      #endif
       :MOD_GRAPPLE
     ]
     
     return ar if name_str.nil?
+
     idx.nil? ? ar[ar.index(name_str.to_sym)] : ar.index(name_str.to_sym)
   end
 end
