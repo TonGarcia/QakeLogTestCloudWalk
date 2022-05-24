@@ -19,7 +19,7 @@ module Importers
 
       line_count = `wc -l "#{dataset_path}"`.strip.split(' ')[0].to_i
       bar = ProgressBar.new(line_count)
-      
+      puts "Processing the file...".colorize(:green)
       File.open(dataset_path) do |f|
         game = nil
         while line = f.gets
@@ -27,7 +27,10 @@ module Importers
           line = line.strip
           
           # check if it is a skip line (log breaker)
-          next unless (line =~ /[0-9]+:[0-9]+ -{3,}/).nil?
+          unless (line =~ /[0-9]+:[0-9]+ -{3,}/).nil?
+            game = nil
+            next
+          end
 
           # check if it is starting a new game
           unless (line =~ /[0-9]+:[0-9]+ InitGame:/).nil?
@@ -48,15 +51,19 @@ module Importers
               players << killer
               player = Player.find_or_create_by(name: killer)
               obj_players << player
-              GamePlayer.create(game_id: game&.id, player_id: player.id)
             end
 
             unless players.include? killed
               players << killed
               player = Player.find_or_create_by(name: killed)
               obj_players << player
-              GamePlayer.create(game_id: game&.id, player_id: player.id)
             end
+
+            killer_player = obj_players[players.index(killer)]
+            killed_player = obj_players[players.index(killed)]
+
+            GamePlayer.find_or_create_by(game_id: game&.id, player_id: killer_player.id)
+            GamePlayer.find_or_create_by(game_id: game&.id, player_id: killed_player.id)
             
             kill = Kill.new(
               killed_id: obj_players[players.index(killed)].id, 

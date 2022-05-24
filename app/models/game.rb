@@ -3,8 +3,9 @@ class Game < ApplicationRecord
   acts_as_paranoid
 
   # Relations
-  has_and_belongs_to_many :players
   has_many :kills
+  has_many :game_players
+  has_many :players, through: :game_players
 
   def name
     "game-#{self.id}"

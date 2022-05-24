@@ -29,8 +29,11 @@ class Report
     # batch processing loop
     Game.all.find_each do |game|
       response[game.name] = {
-        total_kills: game
+        total_kills: game.kills.where.not(killer_id: world_id).count,
+        players: game.players.where.not(id: world_id).pluck(:name)
       }
     end
+    
+    response
   end
 end
