@@ -1,0 +1,28 @@
+AllCops:
+  Exclude:
+    - db/migrate/**/*
+    - db/schema.rb
+    - config/**/*
+    - script/**/*
+    - bin/**/*
+    - test/**/*
+    - app/admin/**/*
+    - app/channels/**/*
+    - app/jobs/**/*
+    - node_modules/**/*
+    - Gemfile
+    - Rakefile
+    - config.ru
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+
+require:
+  - rubocop-rails
+
+Style/FrozenStringLiteralComment:
+  Description: To help transition from Ruby 2.3.0 to Ruby 3.0.
+  Enabled: false
+
+Style/Documentation:
+  Description: 'Document classes and non-namespace modules.'
+  Enabled: false
