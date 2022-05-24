@@ -5,9 +5,9 @@ module Importers
     include Singleton
 
     def import
-      super
-      self.model = 'Exam'
-      self.file_name = 'qgames.log'
+      # super
+      # self.model = 'Exam'
+      # self.file_name = 'qgames.log'
     end
   end
 end

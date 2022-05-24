@@ -2,6 +2,9 @@
 
 QakeLog CloudWalk Test
 
+1. GitLab repo: https://gitlab.com/TonGarcia/qakelog
+2. GitHub repo: https://github.com/TonGarcia/QakeLogTestCloudWalk
+
 ## ToDo / Goals
 
 - [ ] Read the log file
@@ -22,6 +25,8 @@ QakeLog CloudWalk Test
 * __FrontEnd__: Reactjs
 * __JSON__: jbuilder
 * __SoftDelete__: Paranoid
+* __Containers__: Dockerfile + Docker-Compose
+* __Data__: Elastic Logstash Kibana (ELK)
 
 ## Project Archtecture
 
@@ -131,3 +136,11 @@ typedef enum {
   }
 }
 ```
+
+# Proofs
+
+## Locale
+![Locale](proofs/locale_working.png)
+
+## Coverage/Testing
+![Testing]()

@@ -41,10 +41,26 @@ gem 'colorize', '~> 0.8.1'
 # soft-delete
 gem 'paranoia', '~> 2.2'
 
+# smtp mailer
+gem 'net-smtp'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 
+  # RSPec Plugin for testing Views
+  gem 'capybara', '~> 3.37.1'
+  # RSPec Plugin for code-coverage
+  gem 'simplecov', '~> 0.21.2'
+  # DB management gem
+  gem 'database_cleaner', '~> 2.0', '>= 2.0.1'
+
+  # Run against the latest stable release
+  gem 'rspec-rails', '~> 5.1.2'
+
+  # Shoulda matchers helpers
+  gem 'shoulda-matchers', '~> 5.1'
+  
   # RuboCop Git CI
   gem 'rubocop-gitlab-security', '~> 0.1.1'
   gem 'rubocop-github', '~> 0.17.0'

@@ -7,7 +7,7 @@ class Kill < ApplicationRecord
   belongs_to :game
 
   # Validations
-  validates :cause, length: { minimum: 1 }, presence: true
+  validates :cause, numericality: { greater_than: 0, less_than: Cause.name_arr.length }, presence: true
   validates :player_id, presence: true
   validates :game_id, presence: true
 end

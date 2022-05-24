@@ -1,0 +1,47 @@
+# encoding: UTF-8
+# pt-br translations for Models
+pt-br:
+  activerecord:
+    models:
+      cause: Causa da morte
+      game: Partida
+      game_player: Jogador da partida
+      kill: Morte
+      player: Jogador
+
+    attributes:
+
+      # Cause -----------------------------------------------------
+      cause:
+        name: Nome
+        created_at: Criada em
+        updated_at: Atualizada em
+
+      # Game -----------------------------------------------------
+      game:
+        name: Nome da partida
+        total_kills: Total de mortes
+        created_at: Criada em
+        updated_at: Atualizada em
+
+      # GamePlayer -----------------------------------------------------
+      game_player:
+        game: Partida
+        player: Jogador
+        game_id: Id da partida
+        player_id: Id do jogador
+        created_at: Criada em
+        updated_at: Atualizada em
+
+      # Kill -----------------------------------------------------
+      kill:
+        player: Jogador assassino
+        game: Partida
+        player_id: Id do Jogador assassino
+        game_id: Id da Partida
+
+      # Player -----------------------------------------------------
+      player:
+        name: Nome do jogador
+        player_id: Id do Jogador assassino
+        game_id: Id da Partida

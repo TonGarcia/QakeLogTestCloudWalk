@@ -1,6 +1,6 @@
 class Cause
-  def self.name_arr
-    [
+  def self.name_arr(name_str=nil, idx=false)
+    ar = [
       :MOD_UNKNOWN,
       :MOD_SHOTGUN,
       :MOD_GAUNTLET,
@@ -33,10 +33,13 @@ class Cause
       #endif
       :MOD_GRAPPLE
     ]
+    
+    return ar if name_str.nil?
+    idx.nil? ? ar[ar.index(name_str.to_sym)] : ar.index(name_str.to_sym)
   end
   
-  def self.name_h
-    {
+  def self.name_h(name_str=nil)
+    h = {
       MOD_UNKNOWN: 'MOD_UNKNOWN',
       MOD_SHOTGUN: 'MOD_SHOTGUN',
       MOD_GAUNTLET: 'MOD_GAUNTLET',
@@ -69,5 +72,7 @@ class Cause
       #endif
       MOD_GRAPPLE: 'MOD_GRAPPLE' 
     }
+    return h if name_str.nil?
+    h[name_str.to_sym]
   end
 end
