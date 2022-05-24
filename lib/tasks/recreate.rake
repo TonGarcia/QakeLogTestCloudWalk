@@ -16,9 +16,9 @@ namespace :db do
     Rake::Task['db:seed'].invoke
 
     puts 'Test Env'.colorize(:green)
-    system('rails db:migrate RAILS_ENV=test')
+    system('env RAILS_ENV=test rails db:migrate')
     # Rake::Task['db:the_role:admin RAILS_ENV=test --trace'].invoke
-    # system('rails db:seed RAILS_ENV=test --trace')
+    system('env RAILS_ENV=test rake db:seed')
 
     # puts 'Local Production Env'.colorize(:grey)
     # system('rails db:migrate RAILS_ENV=production')

@@ -20,8 +20,8 @@ Just run: ``` $ docker-compose up -d ```
 ## ToDo / Goals
 
 - [x] Read the log file
-- [ ] Group the game data of each match
-- [ ] Collect kill data
+- [x] Group the game data of each match
+- [x] Collect kill data
 
 ## Project Ends
 
@@ -162,4 +162,4 @@ typedef enum {
 ![Locale](proofs/locale_working.png)
 
 ## Coverage/Testing
-![Testing]()
+![Testing](proofs/coverage.png)

@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Kill, type: :model do
+  let!(:world) { Player.create(name: '<world>') }
   let!(:player) { Player.create(name: 'Ilton') }
-  let(:kill) { Kill.new(player_id: player.id, cause: Cause.name_arr('MOD_SHOTGUN')) }
+  let(:kill) { Kill.new(killer_id: world.id, killed_id: player.id, cause: Cause.name_arr('MOD_SHOTGUN')) }
 
   describe 'creating' do
     it 'should successfully create a kill' do
