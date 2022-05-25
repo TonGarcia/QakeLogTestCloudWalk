@@ -78,3 +78,5 @@ Metrics/AbcSize:
 Style/SymbolArray: 
   Description: Use %i or %I for an array of symbols
   Enabled: false
+
+

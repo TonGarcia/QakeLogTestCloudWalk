@@ -15,8 +15,8 @@ class HomeController < ApplicationController
     respond_to do |format|
       format.csv do
         response.headers['Content-Type'] = 'text/csv'
-        response.headers['Content-Disposition'] = "attachment; filename=qake_logs.csv"
-        render template: "home/exporter"
+        response.headers['Content-Disposition'] = 'attachment; filename=qake_logs.csv'
+        render template: 'home/exporter'
       end
     end
   end
