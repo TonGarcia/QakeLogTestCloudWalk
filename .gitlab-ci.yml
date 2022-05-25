@@ -84,9 +84,11 @@ rspec:
     - nvm install 12.18.3
     - yarn install
     - bundle exec rake db:create
+    - RAILS_ENV=test rails db:create
+    - RAILS_ENV=test rails db:recreate
     - RAILS_ENV=test DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rspec spec
-  only:
-    - tags
+#  only:
+#    - tags
 
 #heroku:
 #  stage: deploy
