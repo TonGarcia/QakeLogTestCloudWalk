@@ -58,7 +58,7 @@ rubocop:
 assets_precompile:
   stage: build
   script:
-    - curl -fsSL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+    - curl -fsSL https://deb.nodesource.com/setup_12.x | -E bash -
     - apt-get install -y nodejs
     - yarn install
     - bundle exec rake webpacker:install
