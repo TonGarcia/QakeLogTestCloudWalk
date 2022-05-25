@@ -1,3 +1,5 @@
+require 'csv'
+
 class HomeController < ApplicationController
   # POST /api/importer -> import the received file 
   def importer; end
@@ -8,5 +10,13 @@ class HomeController < ApplicationController
   end
 
   # GET /api/exporter -> retrieve CSV dataset
-  def exporter; end
+  def exporter
+    respond_to do |format|
+      format.csv do
+        response.headers['Content-Type'] = 'text/csv'
+        response.headers['Content-Disposition'] = "attachment; filename=qake_logs.csv"
+        render template: "exporter"
+      end
+    end
+  end
 end
