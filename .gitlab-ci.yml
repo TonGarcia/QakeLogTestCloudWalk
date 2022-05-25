@@ -63,8 +63,8 @@ assets_precompile:
     - yarn install
     - bundle exec rake webpacker:install
     - bundle exec rake assets:precompile
-#  only:
-#    - tags
+  only:
+    - tags
 
 rails:
   stage: build
