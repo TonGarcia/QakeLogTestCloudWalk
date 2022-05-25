@@ -5,7 +5,7 @@
 
 # Official language image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/ruby/tags/
-image: iltongarcia/ruby:3.1.1
+image: iltongarcia/ruby:2.7.2
 
 # Pick zero or more services to be used on all builds.
 # Only needed when using a docker container to run your tests in.

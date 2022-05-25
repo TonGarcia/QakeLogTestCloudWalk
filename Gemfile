@@ -1,5 +1,5 @@
-ruby '3.1.1'
-#ruby=3.1.1@qake
+ruby '2.7.2'
+#ruby=2.7.2@qake
 
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
