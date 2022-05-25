@@ -11,11 +11,12 @@ class HomeController < ApplicationController
 
   # GET /api/exporter -> retrieve CSV dataset
   def exporter
+    @kills = Kill.all
     respond_to do |format|
       format.csv do
         response.headers['Content-Type'] = 'text/csv'
         response.headers['Content-Disposition'] = "attachment; filename=qake_logs.csv"
-        render template: "exporter"
+        render template: "home/exporter"
       end
     end
   end

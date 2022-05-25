@@ -1,0 +1,5 @@
+<%- headers = %w[killer killed game_id cause] -%>
+<%= CSV.generate_line headers %>
+<%- @kills.each do |kill| -%>
+  <%= CSV.generate_line([kill.killer.name, kill.killed.name, kill.game_id, Cause.name_arr[kill.cause]]) -%>
+<%- end -%>
