@@ -86,8 +86,8 @@ rspec:
     - bundle exec rake db:create
     - bundle exec rake db:recreate
     - RAILS_ENV=test DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rspec spec
-#  only:
-#    - tags
+  only:
+    - tags
 
 #heroku:
 #  stage: deploy
